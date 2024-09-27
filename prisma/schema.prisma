@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["metrics", "tracing", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuidOssp(map: "uuid-ossp")]
+}
+
+model User {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  username String
+  email    String
+
+  lastSeenAt    DateTime @default(now()) @map("last_seen_at")
+  lastPlayedAt  DateTime @default(now()) @map("last_played_at")
+  currentStreak Int      @default(0) @map("current_streak")
+  bestStreak    Int      @default(0) @map("best_streak")
+  totalPoints   Int      @default(0) @map("total_points")
+  gamesWon      Int      @default(0) @map("games_won")
+  gamesPlayed   Int      @default(0) @map("games_played")
+
+  userPuzzles UserPuzzle[]
+  Leaderboard Leaderboard[]
+
+  @@unique([username, email])
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+model Puzzle {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  puzzleId String   @map("puzzle_id")
+  isActive Boolean  @default(true)
+  week     DateTime @map("week")
+
+  userPuzzles UserPuzzle[]
+
+  @@unique([puzzleId])
+  @@index([puzzleId])
+  @@map("puzzles")
+}
+
+model UserPuzzle {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  completedAt            DateTime? @map("completed_at")
+  totalQuestionsAnswered Int       @default(0) @map("total_questions_answered")
+  totalPoints            Int       @default(0) @map("total_points")
+  userId                 String    @map("user_id") @db.Uuid
+  puzzleId               String    @map("puzzle_id") @db.Uuid
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, puzzleId])
+  @@index([userId])
+  @@index([puzzleId])
+  @@map("user_puzzles")
+}
+
+model Leaderboard {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  totalPoints      Int      @default(0) @map("total_points")
+  puzzlesCompleted Int      @default(0) @map("puzzles_completed")
+  week             DateTime @map("week")
+  userId           String   @map("user_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, week])
+  @@index([userId])
+  @@map("leaderboards")
+}
