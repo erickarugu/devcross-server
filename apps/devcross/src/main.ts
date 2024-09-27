@@ -13,7 +13,10 @@ import { DevcrossModule } from './devcross.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     DevcrossModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      logger: true,
+      trustProxy: true,
+    }),
   );
 
   const configService = app.get(ConfigService);
@@ -30,14 +33,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(configService.get('PORT'));
-  Logger.log(
-    `Server started at http://localhost:${configService.get('PORT')}/api`,
-  );
-  Logger.log(
-    `Swagger UI available at http://localhost:${configService.get('PORT')}/api`,
-  );
+  const HTTP_PORT = configService.get<string>('PORT');
+
+  await app.listen(HTTP_PORT, '0.0.0.0');
+
+  Logger.log(`Server started at http://localhost:${HTTP_PORT}/api`);
+  Logger.log(`Swagger UI available at http://localhost:${HTTP_PORT}/api/docs`);
 }
 bootstrap();

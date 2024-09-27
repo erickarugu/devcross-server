@@ -2,13 +2,29 @@ services:
   devcross:
     build:
       context: .
-      dockerfile: apps/devcross/Dockerfile
+      dockerfile: ./apps/devcross/Dockerfile
       target: development
-    command: pnpm run start:dev devcross
-    ports:
-      - 3000:3000
+      tags:
+        - devcross
+    command: >
+      sh -c "pnpm run prisma:migrate-deploy &&
+             npx prisma generate &&
+             pnpm run start:dev devcross"
+
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     env_file:
       - .env
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 5434:5432

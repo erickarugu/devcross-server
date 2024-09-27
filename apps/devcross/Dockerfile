@@ -1,6 +1,9 @@
-FROM node:alpine AS development
+FROM node:20-slim AS development
 
 WORKDIR /usr/src/app
+
+RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update && apt-get install -y procps && rm -rf /var/lib/apt/lists/*
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
@@ -11,10 +14,11 @@ RUN pnpm install
 
 COPY . .
 
+
+
 RUN pnpm run build
 
-
-FROM node:alpine AS production
+FROM node:20-slim AS production
 
 WORKDIR /usr/src/app
 

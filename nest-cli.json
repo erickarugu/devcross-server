@@ -4,7 +4,8 @@
   "sourceRoot": "apps/devcross/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "builder": "tsc",
+    "webpack": false,
     "tsConfigPath": "apps/devcross/tsconfig.app.json"
   },
   "projects": {
