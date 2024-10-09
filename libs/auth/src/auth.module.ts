@@ -7,6 +7,6 @@ import { AuthUseCase } from './auth.usecase';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, AuthUseCase],
-  exports: [AuthService],
+  exports: [AuthService, AuthUseCase],
 })
 export class AuthModule {}
