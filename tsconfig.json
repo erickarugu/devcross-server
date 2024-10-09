@@ -18,16 +18,48 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/common": ["libs/common/src"],
-      "@app/common/*": ["libs/common/src/*"],
-      "@app/user": ["libs/user/src"],
-      "@app/user/*": ["libs/user/src/*"],
-      "@app/puzzle": ["libs/puzzle/src"],
-      "@app/puzzle/*": ["libs/puzzle/src/*"],
-      "@app/leaderboard": ["libs/leaderboard/src"],
-      "@app/leaderboard/*": ["libs/leaderboard/src/*"],
-      "@app/prisma": ["libs/prisma/src"],
-      "@app/prisma/*": ["libs/prisma/src/*"]
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@app/user": [
+        "libs/user/src"
+      ],
+      "@app/user/*": [
+        "libs/user/src/*"
+      ],
+      "@app/puzzle": [
+        "libs/puzzle/src"
+      ],
+      "@app/puzzle/*": [
+        "libs/puzzle/src/*"
+      ],
+      "@app/leaderboard": [
+        "libs/leaderboard/src"
+      ],
+      "@app/leaderboard/*": [
+        "libs/leaderboard/src/*"
+      ],
+      "@app/prisma": [
+        "libs/prisma/src"
+      ],
+      "@app/prisma/*": [
+        "libs/prisma/src/*"
+      ],
+      "@app/userPuzzle": [
+        "libs/userPuzzle/src"
+      ],
+      "@app/userPuzzle/*": [
+        "libs/userPuzzle/src/*"
+      ],
+      "@app/auth": [
+        "libs/auth/src"
+      ],
+      "@app/auth/*": [
+        "libs/auth/src/*"
+      ]
     }
   }
 }

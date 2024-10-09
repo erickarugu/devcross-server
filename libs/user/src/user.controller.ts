@@ -1,13 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserInput } from './dtos/user.input';
 import { UserUsecase } from './user.usecase';
@@ -22,39 +14,30 @@ export class UserController {
     return this.userUseCase.getUsers();
   }
 
-  @Get(':username')
+  @Get(':id')
   @ApiParam({
-    name: 'username',
+    name: 'id',
     required: true,
   })
-  async getUsers(@Param('username') username: string) {
-    return this.userUseCase.getUser({ username });
+  async getUsers(@Param('id') id: string) {
+    return this.userUseCase.getUser({ id });
   }
 
-  @Post()
-  @ApiBody({ type: CreateUserInput })
-  async createUser(@Body() input: CreateUserInput) {
-    return this.userUseCase.createUser(input);
-  }
-
-  @Put(':username')
+  @Put(':id')
   @ApiParam({
-    name: 'username',
+    name: 'id',
     required: true,
   })
-  async updateUser(
-    @Body() input: CreateUserInput,
-    @Param('username') username: string,
-  ) {
-    return this.userUseCase.updateUser({ username, input });
+  async updateUser(@Body() input: CreateUserInput, @Param('id') id: string) {
+    return this.userUseCase.updateUser({ id, input });
   }
 
-  @Delete(':username')
+  @Delete(':id')
   @ApiParam({
-    name: 'username',
+    name: 'id',
     required: true,
   })
-  async deleteUser(@Param('username') username: string) {
-    return this.userUseCase.deleteUser({ username });
+  async deleteUser(@Param('id') id: string) {
+    return this.userUseCase.deleteUser({ id });
   }
 }

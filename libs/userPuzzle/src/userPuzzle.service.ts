@@ -1,26 +1,26 @@
 import { PrismaService } from '@app/prisma';
-import { LeaderBoard } from '@app/prisma/models';
+import { UserPuzzle } from '@app/prisma/models';
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 
 import {
-  CreateLeaderboardOptions,
-  DeleteLeaderboardOptions,
-  GetLeaderboardOptions,
-  GetLeaderboardsOptions,
-  UpdateLeaderboardOptions,
+  CreateUserPuzzleOptions,
+  DeleteUserPuzzleOptions,
+  GetUserPuzzleOptions,
+  GetUserPuzzlesOptions,
+  UpdateUserPuzzleOptions,
 } from './types';
 
 @Injectable()
-export class LeaderboardService {
+export class UserPuzzleService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getLeaderboard(
-    options: GetLeaderboardOptions,
-  ): Promise<LeaderBoard | null> {
+  async getUserPuzzle(
+    options: GetUserPuzzleOptions,
+  ): Promise<UserPuzzle | null> {
     const { where, select } = options;
 
     try {
-      return await this.prismaService.leaderBoard.findFirst({
+      return await this.prismaService.userPuzzle.findFirst({
         where,
         select,
       });
@@ -29,29 +29,27 @@ export class LeaderboardService {
     }
   }
 
-  async getLeaderboardOrThrow(
-    options: GetLeaderboardOptions,
-  ): Promise<LeaderBoard | NotFoundException> {
+  async getUserPuzzleOrThrow(
+    options: GetUserPuzzleOptions,
+  ): Promise<UserPuzzle | NotFoundException> {
     try {
-      const leaderboard = await this.getLeaderboard(options);
+      const userPuzzle = await this.getUserPuzzle(options);
 
-      if (!leaderboard) {
-        throw new NotFoundException('Leaderboard not found');
+      if (!userPuzzle) {
+        throw new NotFoundException('UserPuzzle not found');
       }
 
-      return leaderboard;
+      return userPuzzle;
     } catch (err: any) {
       throw new HttpException(err.message, 500);
     }
   }
 
-  async getLeaderboards(
-    options: GetLeaderboardsOptions,
-  ): Promise<LeaderBoard[]> {
+  async getUserPuzzles(options: GetUserPuzzlesOptions): Promise<UserPuzzle[]> {
     const { where, select, args } = options;
 
     try {
-      return await this.prismaService.leaderBoard.findMany({
+      return await this.prismaService.userPuzzle.findMany({
         where,
         select,
         ...args,
@@ -61,18 +59,19 @@ export class LeaderboardService {
     }
   }
 
-  async createLeaderboard(
-    options: CreateLeaderboardOptions,
-  ): Promise<LeaderBoard> {
+  async createUserPuzzle(
+    options: CreateUserPuzzleOptions,
+  ): Promise<UserPuzzle> {
     const { input, select } = options;
 
-    const { userId, ...restInput } = input;
+    const { userId, puzzleId, ...restInput } = input;
 
     try {
-      return await this.prismaService.leaderBoard.create({
+      return await this.prismaService.userPuzzle.create({
         data: {
           ...restInput,
           user: { connect: { id: userId } },
+          puzzle: { connect: { id: puzzleId } },
         },
         select,
       });
@@ -81,13 +80,13 @@ export class LeaderboardService {
     }
   }
 
-  async updateLeaderboard(
-    options: UpdateLeaderboardOptions,
-  ): Promise<LeaderBoard> {
+  async updateUserPuzzle(
+    options: UpdateUserPuzzleOptions,
+  ): Promise<UserPuzzle> {
     const { where, input, select } = options;
 
     try {
-      return await this.prismaService.leaderBoard.update({
+      return await this.prismaService.userPuzzle.update({
         where,
         data: {
           ...input,
@@ -99,13 +98,13 @@ export class LeaderboardService {
     }
   }
 
-  async deleteLeaderboard(
-    options: DeleteLeaderboardOptions,
-  ): Promise<LeaderBoard> {
+  async deleteUserPuzzle(
+    options: DeleteUserPuzzleOptions,
+  ): Promise<UserPuzzle> {
     const { where } = options;
 
     try {
-      return await this.prismaService.leaderBoard.delete({
+      return await this.prismaService.userPuzzle.delete({
         where,
       });
     } catch (err: any) {

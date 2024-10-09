@@ -15,16 +15,16 @@ export class UserUsecase {
     });
   }
 
-  async getUser({ username }: { username: string }) {
-    return this.userService.getUserOrThrow({ where: { username } });
+  async getUser({ id }: { id: string }) {
+    return this.userService.getUserOrThrow({ where: { id } });
   }
 
   async createUser(input: any) {
     return this.userService.createUser({ input });
   }
 
-  async updateUser({ username, input }: { username: string; input: any }) {
-    const user = await this.userService.getUser({ where: { username } });
+  async updateUser({ id, input }: { id: string; input: any }) {
+    const user = await this.userService.getUser({ where: { id } });
 
     if (!user) {
       throw new BadRequestException('User not found');
@@ -36,8 +36,8 @@ export class UserUsecase {
     });
   }
 
-  async deleteUser({ username }: { username: string }) {
-    const user = await this.userService.getUser({ where: { username } });
+  async deleteUser({ id }: { id: string }) {
+    const user = await this.userService.getUser({ where: { id } });
 
     if (!user) {
       throw new BadRequestException('User not found');

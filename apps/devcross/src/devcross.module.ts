@@ -1,13 +1,17 @@
+import { AuthModule } from '@app/auth';
 import { LoggerModule } from '@app/common';
-import { PrismaModule } from '@app/prisma/prisma.module';
+import { LeaderboardModule } from '@app/leaderboard';
+import { PrismaModule } from '@app/prisma';
 import { PuzzleModule } from '@app/puzzle';
 import { UserModule } from '@app/user';
+import { UserPuzzleModule } from '@app/userPuzzle';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
 @Module({
   imports: [
+    AuthModule,
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -19,6 +23,8 @@ import * as Joi from 'joi';
     LoggerModule,
     UserModule,
     PuzzleModule,
+    LeaderboardModule,
+    UserPuzzleModule,
   ],
   controllers: [],
   providers: [],

@@ -1,6 +1,5 @@
+import { CreatePuzzleInput, UpdatePuzzleInput } from '@app/puzzle/dtos';
 import { Prisma } from '@prisma/client';
-
-import { CreatePuzzleInput, UpdatePuzzleInput } from '../dtos/puzzle.input';
 
 export type GetPuzzleOptions = {
   where?: Prisma.PuzzleWhereInput;

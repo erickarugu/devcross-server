@@ -1,6 +1,5 @@
+import { CreateUserInput, UpdateUserInput } from '@app/user/dtos';
 import { Prisma } from '@prisma/client';
-
-import { CreateUserInput, UpdateUserInput } from '../dtos/user.input';
 
 export type GetUserOptions = {
   where?: Prisma.UserWhereInput;

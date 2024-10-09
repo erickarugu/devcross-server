@@ -62,6 +62,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
+    },
+    "userPuzzle": {
+      "type": "library",
+      "root": "libs/userPuzzle",
+      "entryFile": "index",
+      "sourceRoot": "libs/userPuzzle/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/userPuzzle/tsconfig.lib.json"
+      }
+    },
+    "auth": {
+      "type": "library",
+      "root": "libs/auth",
+      "entryFile": "index",
+      "sourceRoot": "libs/auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/auth/tsconfig.lib.json"
+      }
     }
   },
   "monorepo": true,

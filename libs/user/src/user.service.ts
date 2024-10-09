@@ -1,4 +1,5 @@
 import { PrismaService } from '@app/prisma';
+import { User } from '@app/prisma/models';
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 
 import {
@@ -13,7 +14,7 @@ import {
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUser(options: GetUserOptions) {
+  async getUser(options: GetUserOptions): Promise<User | null> {
     const { where, select } = options;
 
     try {
@@ -26,7 +27,9 @@ export class UserService {
     }
   }
 
-  async getUserOrThrow(options: GetUserOptions) {
+  async getUserOrThrow(
+    options: GetUserOptions,
+  ): Promise<User | NotFoundException> {
     const user = await this.getUser(options);
 
     if (!user) {
@@ -36,7 +39,7 @@ export class UserService {
     return user;
   }
 
-  async getUsers(options: GetUsersOptions) {
+  async getUsers(options: GetUsersOptions): Promise<User[]> {
     const { where, select, args } = options;
 
     try {
@@ -51,7 +54,7 @@ export class UserService {
     }
   }
 
-  async createUser(options: CreateUserOptions) {
+  async createUser(options: CreateUserOptions): Promise<User> {
     const { input, select } = options;
 
     try {
@@ -66,7 +69,7 @@ export class UserService {
     }
   }
 
-  async updateUser(options: UpdateUserOptions) {
+  async updateUser(options: UpdateUserOptions): Promise<User> {
     const { where, input, select } = options;
 
     try {
@@ -82,7 +85,7 @@ export class UserService {
     }
   }
 
-  async deleteUser(options: DeleteUserOptions) {
+  async deleteUser(options: DeleteUserOptions): Promise<User> {
     const { where } = options;
 
     try {
